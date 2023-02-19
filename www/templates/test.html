@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block title %}网站测试主页{% endblock %}
+
+{% block content %}
+    <h1>Users</h1>
+    {% for u in users %}
+        <p>{{ u.name }} / {{ u.email }}</p>
+    {% endfor %}
+{% endblock %}

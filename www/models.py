@@ -3,7 +3,7 @@
 # @Time : 2023/2/14 11:23
 # @Author : SecretLanguage
 import time, uuid
-from www.orm import Model, StringField, IntegerField, BooleanField, FloatField, TextField
+from orm import Model, StringField, IntegerField, BooleanField, FloatField, TextField
 
 def next_id():
     """
@@ -11,6 +11,7 @@ def next_id():
     :return:
     """
     return '%015d%s000' % (int(time.time() * 1000), uuid.uuid4().hex)
+
 
 class User(Model):
     __table__ = 'users'

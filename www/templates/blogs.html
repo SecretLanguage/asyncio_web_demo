@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}日志{% endblock %}
+
+{% block content %}
+    <div>
+        {% for blog in blogs %}
+            <article>
+                <h2><a href="#">{{blog.name}}</a></h2>
+                <p>发表于{{ blog.created_at|datetime }}</p>
+                <p>{{ blog.summary }}</p>
+            </article>
+        {% endfor %}
+    </div>
+
+    <div>
+        <h3>友情链接</h3>
+        <ul class="list-group">
+            <li class="list-group-item active"><a style="color: black" href="">编程</a></li>
+            <li class="list-group-item"><a href="">读书</a></li>
+            <li class="list-group-item"><a href="">市场营销</a></li>
+        </ul>
+    </div>
+{% endblock %}

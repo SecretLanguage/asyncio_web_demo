@@ -47,7 +47,7 @@ async def select(sql, args, size=None):
 
 async def execute(sql, args, autocommit=True):
     log(sql)
-    async  with __pool.get() as conn:
+    async with __pool.get() as conn:
         if not autocommit:
             await conn.begin()
         try:
@@ -55,7 +55,7 @@ async def execute(sql, args, autocommit=True):
                 await cur.execute(sql.replace('?', '%s'), args)
             affected = cur.rowcount()
             if not autocommit:
-                await  conn.commit()
+                await conn.commit()
         except BaseException as e:
             if not autocommit:
                 await conn.rollback()
@@ -130,21 +130,21 @@ class ModelMetaclass(type):
                     # 判断是否存在主键
                     if primaryKey:
                         raise RuntimeError('Duplicate primary key for field: %s' % k)
-                    parimaryKey = k
+                    primaryKey = k
                 else:
                     fields.append(k)
         if not primaryKey:
             raise RuntimeError('Primary key not found')
         for k in mappings.keys():
             attrs.pop(k)
-        escaped_fields = list(map(lambda f: '%s' % f, fields))
+        escaped_fields = list(map(lambda f: '`%s`' % f, fields))
         # 保存属性和列的映射关系
         attrs['__mappings__'] = mappings
         attrs['__table__'] = tableName
         attrs['__primary_key__'] = primaryKey
         attrs['fields__'] = fields
         # 拼接SQL 增删改查语句
-        attrs['__select__'] = 'select `%s`, %s from `%s`' % (parimaryKey, ','.join(escaped_fields), tableName)
+        attrs['__select__'] = 'select `%s`, %s from `%s`' % (primaryKey, ','.join(escaped_fields), tableName)
         attrs['__insert__'] = 'insert into `%s` (%s, `%s`) values (%s)' % (
         tableName, ', '.join(escaped_fields), primaryKey, create_args_string(len(escaped_fields) + 1))
         attrs['__update__'] = 'update `%s` set %s where `%s`=?' % (
