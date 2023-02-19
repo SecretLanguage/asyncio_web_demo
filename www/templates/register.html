@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}注册{% endblock %}
+
+{% title beforehead %}
+    <script>
+        function validateEmail(email) {
+            var re = /^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1, 4}$/;
+            return re.test(email.toLowerCase());
+        }
+        $(function() {
+            var vm = new Vue({
+                el: '#vm',
+                data: {
+                    name: '',
+                    email: '',
+                    password1: '',
+                    password2: ''
+                },
+                methods: {
+                    submit: function (event) {
+                        event.preventDefault();
+                        var $form = $(#vm);
+                        if (! this.name.trim()) {
+                            return $form.showFormError('输入姓名');
+                        }
+                        if (! validateEmail(this.email.trim().toLowerCase())){
+                            return $form.showFormError('邮箱地址错误')
+                        }
+                        if (! this.passwordl.length < 6) {
+                            return $form.showFormError('密码长度至少为6位字符');
+                        }
+                        if (! this.password1 != this.password2) {
+                            return $form.showFormError('输入两次密码不一致');
+                        }
+                        var email = this.email.trim().toLowerCase();
+                        $form.postJSON('/api/users', {
+                            name: this.name.trim(),
+                            email: email,
+                            passwd: CryptoJS.SHA1(email + ':' + this.password1).toString()
+                        }, function (err, r){
+                            if (err) {
+                                return $form.showFormError(err);
+                            }
+                            return location.assign('/');
+                        });
+                    }
+                }
+            });
+            $('#vm').show()
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="">
+          <h1>注册主页面</h1>
+      </div>
+    <form>
+      <div class="form-group">
+        <label for="exampleInputName">姓名:</label>
+        <input placeholder="姓名" type="text" class="form-control" id="exampleInputName">
+      </div><div class="form-group">
+        <label for="exampleInputEmail1">电子邮件:</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div><div class="form-group">
+        <label for="exampleInputSHA1">密码(第一次输入):</label>
+        <input type="text" class="form-control" id="exampleInputSHA1" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputSHA2">密码(第二次输入):</label>
+        <input type="password" class="form-control" id="exampleInputSHA2">
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">确认</label>
+      </div>
+      <button type="submit" class="btn btn-primary">注册</button>
+    </form>
+{% endblock %}

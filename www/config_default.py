@@ -3,6 +3,7 @@
 # @Time : 2023/2/14 22:43
 # @Author : SecretLanguage
 configs = {
+    'debug': True,
     'db': {
         'host': 'localhost',
         'port': 3306,

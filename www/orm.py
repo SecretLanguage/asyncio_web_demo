@@ -182,7 +182,10 @@ class Model(dict, metaclass=ModelMetaclass):
 
     @classmethod
     async def findAll(cls, where=None, args=None, **kw):
-        ' find objects by where clause. '
+        """
+            查找当前类的所有对象
+            return: None
+        """
         sql = [cls.__select__]
         if where:
             sql.append('where')

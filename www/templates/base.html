@@ -6,7 +6,9 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/favicon.ico">
-
+    {% block beforehead %}
+        <!--  Javascript代码  -->
+    {% endblock %}
 </head>
 <body>
     <!--  导航条navbar  -->

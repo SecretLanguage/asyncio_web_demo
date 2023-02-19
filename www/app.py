@@ -131,6 +131,7 @@ async def init_db(app):
         db=configs.db.database
     )
 
+
 async def init(loop):
     await orm.create_pool(loop=loop, host='localhost', port=3306, user='webserver', password='webserver', db='async_http_server_db')
     app = web.Application(loop=loop, middlewares=[
